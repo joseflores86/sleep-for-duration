@@ -44,3 +44,10 @@ sleep_for("30s")`), which keeps the parser small and its errors obvious.
 - `sleep_for(text: str, *, sleeper=None) -> float` — parse and sleep, returning
   the seconds slept.
 - `InvalidDurationError` — subclass of `ValueError`, raised on bad input.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
